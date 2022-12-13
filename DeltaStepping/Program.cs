@@ -115,11 +115,15 @@ namespace Program // Note: actual namespace depends on the project name.
 
                 // The requested edges of a node (light or heavy) 
                 List<(char, int)> reqEdges = new List<(char, int)>();
+                List<(char, int)> deletedNodes = new List<(char, int)>();
 
                 while (bucket.Count != 0)
                 {
                     // Request light edges
                     reqEdges = FindRequests(bucket, "light");
+
+                    // Place all nodes from buckets to allEdges
+                    deletedNodes.AddRange(bucket);
 
                     // Empty the current bucket
                     bucket.Clear();
@@ -129,7 +133,7 @@ namespace Program // Note: actual namespace depends on the project name.
                 }
 
                 // Request all heavy edges
-                reqEdges = FindRequests(bucket, "heavy");
+                reqEdges = FindRequests(deletedNodes, "heavy");
 
                 // Evaluate all heavy edges
                 RelaxRequests(reqEdges);
